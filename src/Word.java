@@ -135,14 +135,10 @@ public class Word {
 				// RECURSION
 				return search(subDictionary, wordToSearch, startIndex, newEndIndex);
 			}
-			else if (comparingString > 0) // then the word is lexically after the midIndex, change the start bound of the search
+			else // then the word is lexically after the midIndex, change the start bound of the search
 			{
 				// RECURSION
 				return search(subDictionary, wordToSearch, newStartIndex, endIndex);
-			}
-			else
-			{
-				return null;
 			}
 		}
 	}
