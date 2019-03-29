@@ -21,114 +21,13 @@ import java.util.Scanner;
 public class Main {
 
 	public static class exitMessageVars {
-			static int numberofEntries;
+		static int numberofEntries;
 	}
 
-	/**
-	 * Laurent's fileManipulation Driver helper class
-	 * Handles Opening, Scanners and PrintWriter with filename
-	 * * fileManip() prompts user for both input and output filename
-	 * * fileManip(String) prompts user for input but allows to specify output file
-	 * * fileManip(String[], String)
-	 * *
-	 */
-	private class fileManip {
-		Scanner inputReader = null;
-		PrintWriter outputWriter = null;
-		String inputFileName = null;
-		String outputFileName = null;
-
-		public fileManip()
-		{
-			inputFileName = promptForFileName(true);
-			outputFileName = promptForFileName(false);
-			initializeScannerAndWriter();
-		}
-
-		public fileManip(String outputFileName)
-		{
-			inputFileName = promptForFileName(true);
-			this.outputFileName = outputFileName;
-			initializeScannerAndWriter();
-		}
-
-		public void initializeScannerAndWriter()
-		{
-			if (inputFileName != null && outputFileName != null)
-			{
-				try
-				{
-					inputReader = new Scanner(new FileInputStream(inputFileName));
-					outputWriter = new PrintWriter(new FileOutputStream(outputFileName));
-				}
-				catch (FileNotFoundException e)
-				{
-					System.out.println("Error: " + e.getMessage());
-					System.out.println("Goodbye.");
-					System.exit(0);
-				}
-			}
-		}
-
-		public void
-		// TODO find how to fork
-
-		/**
-		 * Prompts for the filename and checks if the file exists, reprompt until file exists
-		 *
-		 * @return a String containing the name of the input file
-		 */
-		public String promptForFileName(boolean checkIfExists) {
-
-			Scanner keyIn        = new Scanner(System.in);
-			boolean inputisOK   = false;
-			String  filename     = null;
-			int     triesCounter = 1;
-
-			do
-			{
-
-				if (triesCounter > 3)
-				{
-					System.out.println("Exceeded number of tries.");
-					System.out.println("Goodbye.");
-					System.exit(0);
-				}
-				else if (triesCounter != 1)
-				{
-					System.out.println("\nTry again. Try #" + triesCounter + " (3 Maximum)");
-				}
-
-				// Prompting user
-				System.out.print("Please enter the full name (with extension) of the file for which\n you wish to create a dictionary: ");
-				filename = keyIn.nextLine();
-
-				if (checkIfExists)
-				{
-					// Check if the file exists
-					File inputFile = new File(filename);
-					if (!inputFile.exists())
-					{
-						System.out.println("\nThe file doesn't exist. Check your input and verify that the file is in the correct directory.");
-						triesCounter++;
-					}
-					else
-					{
-						inputisOK = true;
-					}
-				}
-
-				if(!filename.contains("."))
-				{
-					inputisOK = false;
-					System.out.println("\nPlease enter a file extension. Try again.");
-					triesCounter++;
-				}
-			}
-			while (!inputisOK);
-
-			return filename;
-		}
+	public static class instanceVars {
+		static       Scanner     inputReader    = null;                              // Will Store inputReader
+		static       PrintWriter outputWriter   = null;                              // Will Store outputWriter
+		static final String      outputFileName = "Sub-Dictionary.txt";              // Name of the outputFile
 	}
 
 	/**
@@ -138,44 +37,32 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 
-		Scanner      inputReader          = null;                              // Will Store inputReader
-		PrintWriter  outputWriter         = null;                              // Will Store outputWriter
-		final String outputFileName       = "Sub-Dictionary.txt";              // Name of the outputFile
-		boolean      mustDeleteOutputFile = false;                             // Flag to delete outputFile
+		boolean mustDeleteOutputFile = false;                             // Flag to delete outputFile
 
 		// Displaying welcome message
 		displayWelcomeMessage();
 
 		// Prompt User for input filename, checks if it's valid
-		String inputFileName = promptForFileName();
-
-		// Opening the input and output file
-		try
-		{
-			System.out.println("Opening " + inputFileName + "...");
-			inputReader = new Scanner(new FileInputStream(inputFileName));
-
-			System.out.println("Creating " + outputFileName + "...");
-			outputWriter = new PrintWriter(new FileOutputStream(outputFileName));
-		} catch (FileNotFoundException e)
-		{
-			System.out.println("Error. " + e.getMessage());
-			mustDeleteOutputFile = true;
-		}
+		// Initializes Scanner and PrintWriter
+		FileManip fileManip = new FileManip(instanceVars.outputFileName);
+		instanceVars.inputReader = fileManip.getInputReader();
+		instanceVars.outputWriter = fileManip.getOutputWriter();
 
 		// Reading the input file
 		ArrayList<String> subDictionary = new ArrayList<String>();
-		while (inputReader.hasNext())
+		while (instanceVars.inputReader.hasNext())
 		{
 
 			// Process and append the word into subDictionary list
 			// Binary searches for index to append at
-			cleanAndAppendNextWordIfUnique_sorted(inputReader, subDictionary);
+			System.out.println("Iterations...");
+			cleanAndAppendNextWordIfUnique_sorted(instanceVars.inputReader, subDictionary);
 		}
 
 		// Verify and print the ArrayList
 		if (subDictionary.size() == 0)
 		{
+			System.out.println("SubDictionary array is empty.");
 			// Toggle flag since empty
 			mustDeleteOutputFile = true;
 		}
@@ -185,27 +72,20 @@ public class Main {
 			subDictionary.trimToSize();
 
 			// Printing the output file with sorted ArrayList
-			printArrayListToOutputFile(outputWriter, subDictionary;
+			printArrayListToOutputFile(instanceVars.outputWriter, subDictionary);
 
 		}
 
 		// 									== ENDING PROGRAM ==
 
 		// Closing Scanners and PrintWriter
-		if (inputReader != null)
-		{
-			inputReader.close();
-		}
-		if (outputWriter != null)
-		{
-			outputWriter.close();
-		}
+		fileManip.closeScannerAndWriter();
 
 		// If need to delete output file
 		//mustDeleteOutputFile = true; // DEBUG
 		if (mustDeleteOutputFile)
 		{
-			deleteFile(outputFileName);
+			fileManip.deleteOutputFile();
 			displayExitMessage(1);
 		}
 		else
@@ -222,13 +102,13 @@ public class Main {
 	 * @param subDictionary is a ArrayList of Strings that represents the subDictionary
 	 */
 	public static void cleanAndAppendNextWordIfUnique_sorted(Scanner inputReader, ArrayList<String> subDictionary) {
-		String nextWord = inputReader.next();
+		String nextWord      = inputReader.next();
 		String wordCleanedUp = Word.clean(nextWord);
 
 		if (wordCleanedUp != null)
 		{
 			// Subdictionary binary search for wordCleanedUp
-			int[] searchResult = Word.search(subDictionary, wordCleanedUp);
+			int[]   searchResult      = Word.search(subDictionary, wordCleanedUp);
 			boolean wordAlreadyExists = searchResult[0] != 0;
 
 			// If the word doesn't exist yet, append the wordCleanedUp at the index returned by searchResult[1]
