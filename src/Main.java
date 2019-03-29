@@ -7,9 +7,13 @@
 // out of the input file with headers.
 // -----------------------------------------------------
 
-import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.PrintWriter;
+import java.io.FileOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.File;
 
 /**
  * Names and ID: Laurent Lao (40020483)
@@ -57,7 +61,18 @@ public class Main {
 		while (inputReader.hasNext())
 		{
 
-			processNextWord(inputReader, subDictionary);
+			//processNextWord(inputReader, subDictionary);
+			String word = inputReader.next();
+			word = Word.clean(word);
+
+			if (word != null && subDictionary.indexOf(word) < 0)
+			{
+				subDictionary.add(word);
+			}
+		}
+		if (subDictionary.size() > 0)
+		{
+			subDictionary.sort(null);
 		}
 
 		// Printing the output file
