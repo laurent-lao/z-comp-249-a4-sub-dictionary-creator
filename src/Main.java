@@ -27,16 +27,99 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 
+		Scanner      inputReader        = null;                                // Will Store inputReader
+		PrintWriter  outputWriter       = null;                                // Will Store outputWriter
+		final String outputFileName     = "Sub-Dictionary.txt";                // Name of the outputFile
+		boolean      isDeleteOutputFile = false;                               // Flag to delete outputFile
+
 		// Displaying welcome message
 		displayWelcomeMessage();
 
 		// Prompt User for input filename, checks if it's valid
-		String inputFilneName = promptForFileName();
+		String inputFileName = promptForFileName();
 
+		// Opening the input and output file
+		try
+		{
+			System.out.println("Opening " + inputFileName + "...");
+			inputReader = new Scanner(new FileInputStream(inputFileName));
+
+			System.out.println("Creating " + outputFileName + "...");
+			outputWriter = new PrintWriter(new FileOutputStream(outputFileName));
+		} catch (FileNotFoundException e)
+		{
+			System.out.println("Error. " + e.getMessage());
+			isDeleteOutputFile = true;
+		}
+
+		// Reading the output file
+		ArrayList<String> subdictionary = new ArrayList<String>();
+		while (inputReader.hasNext())
+		{
+			outputWriter.println(inputReader.next()); // DEBUG
+			//processNextWord(inputReader, subdictionary);
+		}
 
 		// == ENDING PROGRAM ==
-		// Displaying exit message
-		displayExitMessage(0);
+		// If need to delete output file
+		//isDeleteOutputFile = true; // DEBUG
+		if (isDeleteOutputFile)
+		{
+			deleteFile(outputFileName);
+			displayExitMessage(1);
+		}
+		else
+		{
+			// Displaying regular exit message
+			displayExitMessage(0);
+		}
+
+		// Closing Scanners and PrintWriter
+		if (inputReader != null)
+		{
+			inputReader.close();
+		}
+		if (outputWriter != null)
+		{
+			outputWriter.close();
+		}
+	} // End of Main
+
+	///**
+	// * Processes the new word, either add it to the dictionary or do nothing
+	// *
+	// * @param inputReader	is a Scanner object representing the inputStreamFile
+	// * @param subdictionary is a ArrayList of Strings that represents the subdictionary
+	// */
+	//public static void processNextWord(Scanner inputReader, ArrayList<String> subdictionary) {
+	//	String nextWord = inputReader.next();
+	//	nextWord = Word.clean(nextWord);
+	//
+	//	if (nextWord != null)
+	//	{
+	//		// searchResult[0]: flag: 0 - the word doesn't exist, 1 - the word exists
+	//		// searchResult[1]: if searchResult[0], searchResult[1] contains the index for the word to be appended at
+	//		int[] searchResult = Word.search(subdictionary, nextWord);
+	//
+	//		// If the word doesn't exist yet, append the nextWord at the index returned by searchResult[1]
+	//		if (searchResult[0] == 0)
+	//		{
+	//			subdictionary.add(searchResult[1], nextWord);
+	//		}
+	//	}
+	//}
+
+	/**
+	 * Deletes specified file
+	 *
+	 * @param outputFileName represents the file to delete
+	 */
+	public static void deleteFile(String outputFileName) {
+		File outputFile = new File(outputFileName);
+		if (outputFile.exists())
+		{
+			outputFile.delete();
+		}
 	}
 
 	/**
@@ -83,7 +166,6 @@ public class Main {
 		while (!fileExists);
 
 		return filename;
-
 	}
 
 	/**
