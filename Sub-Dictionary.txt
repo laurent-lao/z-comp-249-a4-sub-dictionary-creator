@@ -1,4 +1,4 @@
-The document produced this sub-dictionary, which includes 448 entries.
+The document produced this sub-dictionary, which includes 447 entries.
 
 A
 ==
@@ -116,7 +116,6 @@ DYING
 
 E
 ==
-E
 EARLY
 EDUCATION
 EIGHTEEN
@@ -182,7 +181,7 @@ GOOD
 GRAMMAR
 GREAT
 GREATEST
-GROUND
+GROUND-BREAKING
 
 H
 ==

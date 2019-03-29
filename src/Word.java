@@ -20,7 +20,9 @@ public class Word {
 
 	/**
 	 * Cleans the String from forbidden characters and capitalize it
+	 *
 	 * @param wordToClean String representing the word to be cleaned
+	 *
 	 * @return String capitalized and with alpha removed OR returns null if cleaned is of length 0 OR returns MCsquare
 	 */
 	public static String clean(String wordToClean) {
@@ -38,67 +40,84 @@ public class Word {
 			}
 		}
 
-		if (cleaned.length() == 0)
+		if (cleaned.length() == 0) //Only ForbiddenChar
 		{
 			return null;
+		}
+		else if (cleaned.length() == 1) // Single Letter
+		{
+			// Check if the character is either A or I
+			char    charToCheck = cleaned.charAt(0);
+			boolean charIsA     = charToCheck == 'a' || charToCheck == 'A';
+			boolean charIsI     = charToCheck == 'i' || charToCheck == 'I';
+
+			// If neither, return null
+			if (!charIsA && !charIsI)
+			{
+				return null;
+			}
 		}
 		else if (cleaned.equalsIgnoreCase("MC"))
 		{
 			char square = 178;
 			return "MC" + square;
 		}
-		else
-		{
-			// Return the upper case of cleaned
-			return cleaned.toUpperCase();
-		}
+
+		// Return the upper case of cleaned
+		return cleaned.toUpperCase();
+
 	}
 
 	/**
 	 * Checks whether the char is a forbidden character (not alpha)
+	 *
 	 * @param charToCheck represents the char to be checked
+	 *
 	 * @return a boolean value that is true if it is a forbidden character
 	 */
 	public static boolean isForbiddenChar(char charToCheck) {
 		boolean isLowerAlpha = charToCheck >= 'a' && charToCheck <= 'z';
 		boolean isUpperAlpha = charToCheck >= 'A' && charToCheck <= 'Z';
 
-		return !(isLowerAlpha || isUpperAlpha);
+		return !(isLowerAlpha || isUpperAlpha || charToCheck == '-');
 	}
 
 	/**
 	 * Searches for a String in an ArrayList of String
+	 *
 	 * @param subDictionary represents the ArrayList of String
-	 * @param wordToSearch represents the String to be searched for
+	 * @param wordToSearch  represents the String to be searched for
+	 *
 	 * @return search[0]: int representing found (0 = true), search[1]: int representing the index to append at
 	 */
-	public static int [] search(ArrayList<String> subDictionary, String wordToSearch)
-	{
+	public static int[] search(ArrayList<String> subDictionary, String wordToSearch) {
 		int startIndex = 0;
-		int endIndex = subDictionary.size() - 1;
+		int endIndex   = subDictionary.size() - 1;
 		return search(subDictionary, wordToSearch, startIndex, endIndex);
 	}
 
 	/**
 	 * RECURSIVE METHOD: Searches for a String in an ArrayList of String
+	 *
 	 * @param subDictionary represents the ArrayList of String to be searched into
-	 * @param wordToSearch represents the String to be searched for
-	 * @param startIndex Int representing the starting Index
-	 * @param endIndex Int representing the ending index
+	 * @param wordToSearch  represents the String to be searched for
+	 * @param startIndex    Int representing the starting Index
+	 * @param endIndex      Int representing the ending index
+	 *
 	 * @return search[0]: int representing found (0 = false), search[1]: int representing the index to append at
 	 */
-	public static int [] search(ArrayList<String> subDictionary, String wordToSearch, int startIndex, int endIndex){
+	public static int[] search(ArrayList<String> subDictionary, String wordToSearch, int startIndex, int endIndex) {
 
 		// If the startIndex is bigger than the endIndex, the search has ended; the word is not in the array
 		if (startIndex > endIndex)
 		{
-			return new int[]{0, startIndex};
+			return new int[] {0, startIndex};
 		}
 		else
 		{
-			int midIndex = (startIndex + endIndex)/2;
+			int midIndex      = (startIndex + endIndex) / 2;
 			int newStartIndex = midIndex + 1;
-			int newEndIndex = midIndex - 1;
+			int newEndIndex   = midIndex - 1;
 
 			// Get the word at the midIndex
 			String wordAtMidIndex = subDictionary.get(midIndex);
@@ -108,7 +127,7 @@ public class Word {
 
 			if (comparingString == 0) // then it the word has been found in the list
 			{
-				return new int[]{1, -1};
+				return new int[] {1, -1};
 			}
 			else if (comparingString < 0) // then the word is lexically before the midIndex, change the end bound of search
 			{
