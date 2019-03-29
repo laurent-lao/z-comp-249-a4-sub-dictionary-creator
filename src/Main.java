@@ -53,14 +53,16 @@ public class Main {
 		}
 
 		// Reading the output file
-		ArrayList<String> subdictionary = new ArrayList<String>();
+		ArrayList<String> subDictionary = new ArrayList<String>();
 		while (inputReader.hasNext())
 		{
-			outputWriter.println(inputReader.next()); // DEBUG
-			//processNextWord(inputReader, subdictionary);
+			// Debugger
+			debug_NextWordTester(inputReader, outputWriter, subDictionary);
+
+			//processNextWord(inputReader, subDictionary);
 		}
 
-		// == ENDING PROGRAM ==
+		// 									== ENDING PROGRAM ==
 		// If need to delete output file
 		//isDeleteOutputFile = true; // DEBUG
 		if (isDeleteOutputFile)
@@ -85,13 +87,21 @@ public class Main {
 		}
 	} // End of Main
 
+	public static void debug_NextWordTester(Scanner inputReader, PrintWriter outputWriter, ArrayList<String> subDictionary){
+
+		// Clean the word, print it
+		String nextWord = inputReader.next();
+		String cleaned = Word.clean(nextWord);
+		outputWriter.println(cleaned);
+	}
+
 	///**
 	// * Processes the new word, either add it to the dictionary or do nothing
 	// *
 	// * @param inputReader	is a Scanner object representing the inputStreamFile
-	// * @param subdictionary is a ArrayList of Strings that represents the subdictionary
+	// * @param subDictionary is a ArrayList of Strings that represents the subDictionary
 	// */
-	//public static void processNextWord(Scanner inputReader, ArrayList<String> subdictionary) {
+	//public static void processNextWord(Scanner inputReader, ArrayList<String> subDictionary) {
 	//	String nextWord = inputReader.next();
 	//	nextWord = Word.clean(nextWord);
 	//
@@ -118,7 +128,8 @@ public class Main {
 		File outputFile = new File(outputFileName);
 		if (outputFile.exists())
 		{
-			outputFile.delete();
+			boolean deleteIsSuccessful = outputFile.delete();
+			//System.out.println("Debug: Delete has been successful? " + deleteIsSuccessful);
 		}
 	}
 
