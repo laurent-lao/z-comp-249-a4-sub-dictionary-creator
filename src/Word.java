@@ -78,8 +78,9 @@ public class Word {
 	public static boolean isForbiddenChar(char charToCheck) {
 		boolean isLowerAlpha = charToCheck >= 'a' && charToCheck <= 'z';
 		boolean isUpperAlpha = charToCheck >= 'A' && charToCheck <= 'Z';
+		boolean isHyphen = charToCheck == '-';
 
-		return !(isLowerAlpha || isUpperAlpha || charToCheck == '-');
+		return !(isLowerAlpha || isUpperAlpha || isHyphen);
 	}
 
 	/**

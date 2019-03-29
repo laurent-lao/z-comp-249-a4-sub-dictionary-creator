@@ -61,7 +61,11 @@ public class Main {
 		}
 
 		// Printing the output file
-		printArrayListToOutputFile(outputWriter, subDictionary);
+		if (!printArrayListToOutputFile(outputWriter, subDictionary))
+		{
+			// If false, then ArrayList is empty
+			isDeleteOutputFile = true;
+		}
 
 		// 									== ENDING PROGRAM ==
 		// If need to delete output file
@@ -118,27 +122,36 @@ public class Main {
 	 * @param outputWriter  is a PrintWriter object for the outputStreamFile
 	 * @param subDictionary is an ArrayList of String representing the words to be printed
 	 */
-	public static void printArrayListToOutputFile(PrintWriter outputWriter, ArrayList<String> subDictionary) {
+	public static boolean printArrayListToOutputFile(PrintWriter outputWriter, ArrayList<String> subDictionary) {
 		char previousFirstChar = 0;
 
 		// Print intro message to outputFile (size of entries and all)
 		outputWriter.println("The document produced this sub-dictionary, which includes " + subDictionary.size() + " entries.");
 
-		for (String wordToPrint : subDictionary)
+		if (subDictionary.size() != 0)
 		{
-			// Check if it's a new first letter, and add heading if true
-			char firstCharOfWordToPrint = wordToPrint.charAt(0);
-			if (firstCharOfWordToPrint != previousFirstChar)
+			for (String wordToPrint : subDictionary)
 			{
-				// Change the First Char for the next iteration
-				previousFirstChar = firstCharOfWordToPrint;
+				// Check if it's a new first letter, and add heading if true
+				char firstCharOfWordToPrint = wordToPrint.charAt(0);
+				if (firstCharOfWordToPrint != previousFirstChar)
+				{
+					// Change the First Char for the next iteration
+					previousFirstChar = firstCharOfWordToPrint;
 
-				// Print the header
-				outputWriter.println("\n" + firstCharOfWordToPrint + "\n==");
+					// Print the header
+					outputWriter.println("\n" + firstCharOfWordToPrint + "\n==");
+				}
+
+				// Print the word into the file
+				outputWriter.println(wordToPrint);
 			}
 
-			// Print the word into the file
-			outputWriter.println(wordToPrint);
+			return true;
+		}
+		else
+		{
+			return false;
 		}
 	}
 
