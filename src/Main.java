@@ -52,15 +52,16 @@ public class Main {
 			isDeleteOutputFile = true;
 		}
 
-		// Reading the output file
+		// Reading the input file
 		ArrayList<String> subDictionary = new ArrayList<String>();
 		while (inputReader.hasNext())
 		{
-			// Debugger
-			debug_NextWordTester(inputReader, outputWriter, subDictionary);
 
-			//processNextWord(inputReader, subDictionary);
+			processNextWord(inputReader, subDictionary);
 		}
+
+		// Printing the output file
+		printArrayListToOutputFile(outputWriter, subDictionary);
 
 		// 									== ENDING PROGRAM ==
 		// If need to delete output file
@@ -87,37 +88,37 @@ public class Main {
 		}
 	} // End of Main
 
-	public static void debug_NextWordTester(Scanner inputReader, PrintWriter outputWriter, ArrayList<String> subDictionary){
-
-		// Clean the word, print it
+	/**
+	 * Processes the new word, either add it to the dictionary or do nothing
+	 *
+	 * @param inputReader	is a Scanner object representing the inputStreamFile
+	 * @param subDictionary is a ArrayList of Strings that represents the subDictionary
+	 */
+	public static void processNextWord(Scanner inputReader, ArrayList<String> subDictionary) {
 		String nextWord = inputReader.next();
-		String cleaned = Word.clean(nextWord);
-		outputWriter.println(cleaned);
+		nextWord = Word.clean(nextWord);
+
+		if (nextWord != null)
+		{
+			// searchResult[0]: flag: 0 - the word doesn't exist, 1 - the word exists
+			// searchResult[1]: if searchResult[0], searchResult[1] contains the index for the word to be appended at
+			int[] searchResult = Word.search(subDictionary, nextWord);
+
+			// If the word doesn't exist yet, append the nextWord at the index returned by searchResult[1]
+			if (searchResult[0] == 0)
+			{
+				subDictionary.add(searchResult[1], nextWord);
+			}
+		}
 	}
 
-	///**
-	// * Processes the new word, either add it to the dictionary or do nothing
-	// *
-	// * @param inputReader	is a Scanner object representing the inputStreamFile
-	// * @param subDictionary is a ArrayList of Strings that represents the subDictionary
-	// */
-	//public static void processNextWord(Scanner inputReader, ArrayList<String> subDictionary) {
-	//	String nextWord = inputReader.next();
-	//	nextWord = Word.clean(nextWord);
-	//
-	//	if (nextWord != null)
-	//	{
-	//		// searchResult[0]: flag: 0 - the word doesn't exist, 1 - the word exists
-	//		// searchResult[1]: if searchResult[0], searchResult[1] contains the index for the word to be appended at
-	//		int[] searchResult = Word.search(subdictionary, nextWord);
-	//
-	//		// If the word doesn't exist yet, append the nextWord at the index returned by searchResult[1]
-	//		if (searchResult[0] == 0)
-	//		{
-	//			subdictionary.add(searchResult[1], nextWord);
-	//		}
-	//	}
-	//}
+	public static void printArrayListToOutputFile(PrintWriter outputWriter, ArrayList<String> subDictionary)
+	{
+		for (String wordToPrint : subDictionary)
+		{
+			outputWriter.println(wordToPrint);
+		}
+	}
 
 	/**
 	 * Deletes specified file
