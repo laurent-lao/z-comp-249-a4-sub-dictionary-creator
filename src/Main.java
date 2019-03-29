@@ -91,7 +91,7 @@ public class Main {
 	/**
 	 * Processes the new word, either add it to the dictionary or do nothing
 	 *
-	 * @param inputReader	is a Scanner object representing the inputStreamFile
+	 * @param inputReader   is a Scanner object representing the inputStreamFile
 	 * @param subDictionary is a ArrayList of Strings that represents the subDictionary
 	 */
 	public static void processNextWord(Scanner inputReader, ArrayList<String> subDictionary) {
@@ -114,11 +114,11 @@ public class Main {
 
 	/**
 	 * Prints the ArrayList with a header when the starting character is different
-	 * @param outputWriter is a PrintWriter object for the outputStreamFile
+	 *
+	 * @param outputWriter  is a PrintWriter object for the outputStreamFile
 	 * @param subDictionary is an ArrayList of String representing the words to be printed
 	 */
-	public static void printArrayListToOutputFile(PrintWriter outputWriter, ArrayList<String> subDictionary)
-	{
+	public static void printArrayListToOutputFile(PrintWriter outputWriter, ArrayList<String> subDictionary) {
 		char previousFirstChar = 0;
 
 		// Print intro message to outputFile (size of entries and all)
