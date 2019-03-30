@@ -27,6 +27,14 @@ public class Word {
 	 */
 	public static String clean(String wordToClean) {
 		String cleaned = "";
+
+		// Check if there are numbers in the word
+		if (hasNumbers(wordToClean))
+		{
+			return null;
+		}
+
+		// Check for forbidden characters in the word
 		for (int i = 0; i < wordToClean.length(); i++)
 		{
 			// If it's not a forbidden character, add to the string
@@ -84,6 +92,44 @@ public class Word {
 	}
 
 	/**
+	 * Checks if either MC or has Numbers
+	 * @param word String to be checked
+	 * @return if either has MC or has Numbers
+	 */
+	public static boolean hasNumbers(String word) {
+		boolean containsMC = word.contains("MC") && word.length() <= 3;
+
+		if (containsMC)
+		{
+			return false;
+		}
+		else if (containsNumbers(word))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	public static boolean containsNumbers(String word)
+	{
+		String [] numbers = new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8"};
+
+		for (String digit: numbers)
+		{
+			if (word.contains(digit))
+			{
+				return true;
+			}
+		}
+
+		// if reach here, no digits were found
+		return false;
+	}
+
+	/**
 	 * Searches for a String in an ArrayList of String
 	 *
 	 * @param subDictionary represents the ArrayList of String
@@ -135,14 +181,10 @@ public class Word {
 				// RECURSION
 				return search(subDictionary, wordToSearch, startIndex, newEndIndex);
 			}
-			else if (comparingString > 0) // then the word is lexically after the midIndex, change the start bound of the search
+			else // then the word is lexically after the midIndex, change the start bound of the search
 			{
 				// RECURSION
 				return search(subDictionary, wordToSearch, newStartIndex, endIndex);
-			}
-			else
-			{
-				return null;
 			}
 		}
 	}
