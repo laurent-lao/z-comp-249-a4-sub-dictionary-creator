@@ -59,7 +59,6 @@ public class Main {
 
 			// Process and append the word into subDictionary list
 			// Binary searches for index to append at
-			System.out.println("Iterations...");
 			cleanAndAppendNextWordIfUnique_sorted(instanceVars.inputReader, subDictionary);
 		}
 
