@@ -28,6 +28,10 @@ public class FileManip {
 		}
 	}
 
+	/**
+	 * Parameterized constructor
+	 * @param outputFileName Output file name
+	 */
 	public FileManip(String outputFileName) {
 		inputFileName = promptForFileName(true);
 		this.outputFileName = outputFileName;
@@ -36,6 +40,8 @@ public class FileManip {
 
 	/**
 	 * Initializes the Scanner and Writer
+	 * @param inputFileName Input file name
+	 * @param outputFileName Output file name
 	 */
 	public void initializeScannerAndWriter(String inputFileName, String outputFileName) {
 		// Initializes Scanner and Writer
@@ -60,7 +66,7 @@ public class FileManip {
 	/**
 	 * Closes the Scanner and Writers
 	 *
-	 * @return
+	 * @return if successfully closed
 	 */
 	public boolean closeScannerAndWriter() {
 		if (inputReader != null && outputFileName != null)
@@ -76,9 +82,10 @@ public class FileManip {
 		}
 	}
 
+
 	/**
 	 * Prompts for the filename and checks if the file exists, reprompt until file exists
-	 *
+	 * @param checkIfExists whether the program should check if the file already exists or not (used for input files)
 	 * @return a String containing the name of the input file
 	 */
 	public String promptForFileName(boolean checkIfExists) {

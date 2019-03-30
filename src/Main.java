@@ -128,6 +128,7 @@ public class Main {
 	 *
 	 * @param outputWriter  is a PrintWriter object for the outputStreamFile
 	 * @param subDictionary is an ArrayList of String representing the words to be printed
+	 * @return whether the ArrayList is empty or not
 	 */
 	public static boolean printArrayListToOutputFile(PrintWriter outputWriter, ArrayList<String> subDictionary) {
 		char previousFirstChar = 0;
